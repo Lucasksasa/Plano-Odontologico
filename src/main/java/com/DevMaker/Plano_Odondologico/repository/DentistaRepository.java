@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DentistaRepositorio extends JpaRepository <Dentista, Long>{
+public interface DentistaRepository extends JpaRepository <Dentista, Long>{
     Optional<Dentista> findByCro(String cro);
 }
