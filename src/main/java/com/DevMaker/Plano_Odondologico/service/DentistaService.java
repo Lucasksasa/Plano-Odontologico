@@ -29,17 +29,17 @@ public class DentistaService {
     }
 
     @Transactional
-    public Dentista atualizar(Long id, Dentista dados){
-        Dentista existente = dentistaRepository.findById(id)
+    public Dentista atualizar(Long id, Dentista dentistaNovo){
+        Dentista dentistaExistente = dentistaRepository.findById(id)
                 .orElseThrow(()->new EntityNotFoundException("Dentista não encontrado com id: " + id));
 
-        existente.setNome(dados.getNome());
-        existente.setEspecialidade(dados.getEspecialidade());
-        existente.setEmail(dados.getEmail());
-        existente.setTelefone(dados.getTelefone());
-        existente.setCro(dados.getCro());
+        dentistaExistente.setNome(dentistaNovo.getNome());
+        dentistaExistente.setEspecialidade(dentistaNovo.getEspecialidade());
+        dentistaExistente.setEmail(dentistaNovo.getEmail());
+        dentistaExistente.setTelefone(dentistaNovo.getTelefone());
+        dentistaExistente.setCro(dentistaNovo.getCro());
 
-        return dentistaRepository.save(existente);
+        return dentistaRepository.save(dentistaExistente);
     }
 
     @Transactional
