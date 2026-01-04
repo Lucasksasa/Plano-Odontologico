@@ -3,6 +3,8 @@ package com.DevMaker.Plano_Odondologico.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "consultas")
 @Getter
@@ -28,5 +30,8 @@ public class Consulta {
     private StatusConsulta status;
 
     private String observacoes;
+
+    @Column(name = "data_hora", nullable = false)
+    private LocalDateTime dataHora;
 
 }
