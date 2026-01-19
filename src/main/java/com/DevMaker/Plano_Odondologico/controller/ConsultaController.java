@@ -3,6 +3,7 @@ package com.DevMaker.Plano_Odondologico.controller;
 import com.DevMaker.Plano_Odondologico.dto.AgendarConsultaRequest;
 import com.DevMaker.Plano_Odondologico.model.Consulta;
 import com.DevMaker.Plano_Odondologico.service.ConsultaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class ConsultaController {
 
     //  Agendar consulta
     @PostMapping
-    public ResponseEntity<Consulta> agendar(@RequestBody AgendarConsultaRequest request) {
+    public ResponseEntity<Consulta> agendar(@Valid @RequestBody AgendarConsultaRequest request) {
 
         Consulta consulta = consultaService.agendarConsulta(
                 request.getPacienteId(),
