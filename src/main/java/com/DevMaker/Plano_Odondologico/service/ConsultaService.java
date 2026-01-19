@@ -1,5 +1,6 @@
 package com.DevMaker.Plano_Odondologico.service;
 
+import com.DevMaker.Plano_Odondologico.dto.ConsultaResponseDTO;
 import com.DevMaker.Plano_Odondologico.model.*;
 import com.DevMaker.Plano_Odondologico.repository.ConsultaRepository;
 import com.DevMaker.Plano_Odondologico.repository.DentistaRepository;
@@ -20,12 +21,15 @@ public class ConsultaService {
     private final PacienteRepository pacienteRepository;
     private final DentistaRepository dentistaRepository;
 
-    public List<Consulta> listarConsultas() {
-        return consultaRepository.findAll();
+    public List<ConsultaResponseDTO> listarConsultas() {
+        return consultaRepository.findAll()
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
     @Transactional
-    public Consulta agendarConsulta(Long pacienteId,
+    public ConsultaResponseDTO agendarConsulta(Long pacienteId,
                                     Long dentistaId,
                                     LocalDateTime dataHora,
                                     String observacoes) {
@@ -54,32 +58,52 @@ public class ConsultaService {
         consulta.setStatus(StatusConsulta.AGENDADA);
         consulta.setObservacoes(observacoes);
 
-        return consultaRepository.save(consulta);
+        Consulta consultaSalva = consultaRepository.save(consulta);
+        return toResponseDTO(consultaSalva);
     }
 
     @Transactional
-    public Consulta cancelarConsulta(Long consultaId) {
+    public ConsultaResponseDTO cancelarConsulta(Long consultaId) {
         Consulta consulta = consultaRepository.findById(consultaId)
                 .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada"));
 
         consulta.setStatus(StatusConsulta.CANCELADA);
-        return consulta;
+        return toResponseDTO(consulta);
     }
 
     @Transactional
-    public Consulta finalizarConsulta(Long consultaId) {
+    public ConsultaResponseDTO finalizarConsulta(Long consultaId) {
         Consulta consulta = consultaRepository.findById(consultaId)
                 .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada"));
 
         consulta.setStatus(StatusConsulta.FINALIZADA);
-        return consulta;
+        return toResponseDTO(consulta);
     }
 
-    public List<Consulta> listarPorDentista(Long dentistaId) {
-        return consultaRepository.findByDentistaId(dentistaId);
+    public List<ConsultaResponseDTO> listarPorDentista(Long dentistaId) {
+        return consultaRepository.findByDentistaId(dentistaId)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
-    public List<Consulta> listarPorPaciente(Long pacienteId) {
-        return consultaRepository.findByPacienteId(pacienteId);
+    public List<ConsultaResponseDTO> listarPorPaciente(Long pacienteId) {
+        return consultaRepository.findByPacienteId(pacienteId)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+
+    private ConsultaResponseDTO toResponseDTO(Consulta consulta) {
+        return new ConsultaResponseDTO(
+                consulta.getId(),
+                consulta.getPaciente().getId(),
+                consulta.getPaciente().getNome(),
+                consulta.getDentista().getId(),
+                consulta.getDentista().getNome(),
+                consulta.getDataHora(),
+                consulta.getStatus(),
+                consulta.getObservacoes()
+        );
     }
 }

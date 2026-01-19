@@ -1,6 +1,7 @@
 package com.DevMaker.Plano_Odondologico.controller;
 
 import com.DevMaker.Plano_Odondologico.dto.AgendarConsultaRequest;
+import com.DevMaker.Plano_Odondologico.dto.ConsultaResponseDTO;
 import com.DevMaker.Plano_Odondologico.model.Consulta;
 import com.DevMaker.Plano_Odondologico.service.ConsultaService;
 import jakarta.validation.Valid;
@@ -21,36 +22,36 @@ public class ConsultaController {
 
     //  Listar todas as consultas
     @GetMapping
-    public ResponseEntity<List<Consulta>> listar() {
+    public ResponseEntity<List<ConsultaResponseDTO>> listar() {
         return ResponseEntity.ok(consultaService.listarConsultas());
     }
 
     //  Agendar consulta
     @PostMapping
-    public ResponseEntity<Consulta> agendar(@Valid @RequestBody AgendarConsultaRequest request) {
+    public ResponseEntity<ConsultaResponseDTO> agendar(
+            @RequestBody @Valid AgendarConsultaRequest dto) {
 
-        Consulta consulta = consultaService.agendarConsulta(
-                request.getPacienteId(),
-                request.getDentistaId(),
-                request.getDataHora(),
-                request.getObservacoes()
+        ConsultaResponseDTO resposta = consultaService.agendarConsulta(
+                dto.getPacienteId(),
+                dto.getDentistaId(),
+                dto.getDataHora(),
+                dto.getObservacoes()
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(consulta);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
+
 
     //  Cancelar consulta
     @PutMapping("/{id}/cancelar")
-    public ResponseEntity<Consulta> cancelar(@PathVariable Long id) {
-        Consulta consulta = consultaService.cancelarConsulta(id);
-        return ResponseEntity.ok(consulta);
+    public ResponseEntity<ConsultaResponseDTO> cancelar(@PathVariable Long id) {
+        return ResponseEntity.ok(consultaService.cancelarConsulta(id));
     }
 
     //  Finalizar consulta
     @PutMapping("/{id}/finalizar")
-    public ResponseEntity<Consulta> finalizar(@PathVariable Long id) {
-        Consulta consulta = consultaService.finalizarConsulta(id);
-        return ResponseEntity.ok(consulta);
+    public ResponseEntity<ConsultaResponseDTO> finalizar(@PathVariable Long id) {
+        return ResponseEntity.ok(consultaService.finalizarConsulta(id));
     }
 
     //  Listar consultas por dentista
