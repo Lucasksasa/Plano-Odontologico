@@ -56,14 +56,23 @@ public class ConsultaController {
 
     //  Listar consultas por dentista
     @GetMapping("/dentista/{dentistaId}")
-    public ResponseEntity<List<Consulta>> listarPorDentista(@PathVariable Long dentistaId) {
-        return ResponseEntity.ok(consultaService.listarPorDentista(dentistaId));
+    public ResponseEntity<List<ConsultaResponseDTO>> listarPorDentista(
+            @PathVariable Long dentistaId) {
+
+        return ResponseEntity.ok(
+                consultaService.listarPorDentista(dentistaId)
+        );
     }
 
     //  Listar consultas por paciente
     @GetMapping("/paciente/{pacienteId}")
-    public ResponseEntity<List<Consulta>> listarPorPaciente(@PathVariable Long pacienteId) {
-        return ResponseEntity.ok(consultaService.listarPorPaciente(pacienteId));
+    public ResponseEntity<List<ConsultaResponseDTO>> listarPorPaciente(
+            @PathVariable Long pacienteId) {
+
+        return ResponseEntity.ok(
+                consultaService.listarPorPaciente(pacienteId)
+        );
     }
+
 }
 
