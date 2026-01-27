@@ -2,16 +2,17 @@ package com.DevMaker.Plano_Odondologico.repository;
 
 import com.DevMaker.Plano_Odondologico.model.Consulta;
 import com.DevMaker.Plano_Odondologico.model.Dentista;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
     boolean existsByDentistaAndDataHora(Dentista dentista, LocalDateTime dataHora);
 
-    List<Consulta> findByDentistaId(Long dentistaId);
+    Page<Consulta> findByDentistaId(Long dentistaId, Pageable pageable);
 
-    List<Consulta> findByPacienteId(Long pacienteId);
+    Page<Consulta> findByPacienteId(Long pacienteId, Pageable pageable);
 }
