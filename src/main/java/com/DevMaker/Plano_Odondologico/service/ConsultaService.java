@@ -7,8 +7,10 @@ import com.DevMaker.Plano_Odondologico.repository.DentistaRepository;
 import com.DevMaker.Plano_Odondologico.repository.PacienteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,18 +82,20 @@ public class ConsultaService {
         return toResponseDTO(consulta);
     }
 
-    public List<ConsultaResponseDTO> listarPorDentista(Long dentistaId) {
-        return consultaRepository.findByDentistaId(dentistaId)
-                .stream()
-                .map(this::toResponseDTO)
-                .toList();
+
+    public Page<ConsultaResponseDTO> listarConsultas(Pageable pageable) {
+        return consultaRepository.findAll(pageable)
+                .map(this::toResponseDTO);
     }
 
-    public List<ConsultaResponseDTO> listarPorPaciente(Long pacienteId) {
-        return consultaRepository.findByPacienteId(pacienteId)
-                .stream()
-                .map(this::toResponseDTO)
-                .toList();
+    public Page<ConsultaResponseDTO> listarPorDentista(Long dentistaId, Pageable pageable) {
+        return consultaRepository.findByDentistaId(dentistaId, pageable)
+                .map(this::toResponseDTO);
+    }
+
+    public Page<ConsultaResponseDTO> listarPorPaciente(Long pacienteId, Pageable pageable) {
+        return consultaRepository.findByPacienteId(pacienteId, pageable)
+                .map(this::toResponseDTO);
     }
 
     private ConsultaResponseDTO toResponseDTO(Consulta consulta) {
