@@ -6,6 +6,8 @@ import com.DevMaker.Plano_Odondologico.model.Consulta;
 import com.DevMaker.Plano_Odondologico.service.ConsultaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +24,10 @@ public class ConsultaController {
 
     //  Listar todas as consultas
     @GetMapping
-    public ResponseEntity<List<ConsultaResponseDTO>> listar() {
-        return ResponseEntity.ok(consultaService.listarConsultas());
+    public ResponseEntity<Page<ConsultaResponseDTO>> listar(Pageable pageable) {
+        return ResponseEntity.ok(
+                consultaService.listarConsultas(pageable)
+        );
     }
 
     //  Agendar consulta
@@ -56,21 +60,23 @@ public class ConsultaController {
 
     //  Listar consultas por dentista
     @GetMapping("/dentista/{dentistaId}")
-    public ResponseEntity<List<ConsultaResponseDTO>> listarPorDentista(
-            @PathVariable Long dentistaId) {
+    public ResponseEntity<Page<ConsultaResponseDTO>> listarPorDentista(
+            @PathVariable Long dentistaId,
+            Pageable pageable) {
 
         return ResponseEntity.ok(
-                consultaService.listarPorDentista(dentistaId)
+                consultaService.listarPorDentista(dentistaId, pageable)
         );
     }
 
     //  Listar consultas por paciente
     @GetMapping("/paciente/{pacienteId}")
-    public ResponseEntity<List<ConsultaResponseDTO>> listarPorPaciente(
-            @PathVariable Long pacienteId) {
+    public ResponseEntity<Page<ConsultaResponseDTO>> listarPorPaciente(
+            @PathVariable Long pacienteId,
+            Pageable pageable) {
 
         return ResponseEntity.ok(
-                consultaService.listarPorPaciente(pacienteId)
+                consultaService.listarPorPaciente(pacienteId, pageable)
         );
     }
 
